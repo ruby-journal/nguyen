@@ -28,7 +28,7 @@ Nguyên is a fork of Jens Krämer's pdf-forms with addition of filling forms wit
 === Query form fields and fill out PDF forms with pdftk
 
     # adjust the pdftk path to suit your pdftk installation
-    pdftk = Nguyen.new('/usr/local/bin/pdftk')
+    pdftk = Nguyen::PdftkWrapper.new('/usr/local/bin/pdftk')
 
     # find out the field names that are present in form.pdf
     pdftk.get_field_names('path/to/form.pdf')
