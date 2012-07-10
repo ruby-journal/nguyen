@@ -36,11 +36,11 @@ Nguyên is a fork of Jens Krämer's pdf-forms with addition of filling forms wit
     # take form.pdf, set the 'foo' field to 'bar' and save the document to myform.pdf
 
     # with fdf
-    fdf = Nguyen::Fdf(:foo => 'bar')
+    fdf = Nguyen::Fdf.new(:foo => 'bar')
     pdftk.fill_form('/path/to/form.pdf', 'myform.pdf', fdf)
 
     # with xfdf
-    xfdf = Nguyen::Xfdf(:foo => 'bar')
+    xfdf = Nguyen::Xfdf.new(:foo => 'bar')
     pdftk.fill_form('/path/to/form.pdf', 'myform.pdf', xfdf)
 
 == INSTALL:
