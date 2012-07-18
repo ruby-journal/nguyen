@@ -32,7 +32,7 @@ module Nguyen
           }
         }
       end
-      builder.to_xml
+      builder.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::AS_XML)
     end
 
     # write fdf content to path
