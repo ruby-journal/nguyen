@@ -4,6 +4,10 @@ rvm:
   - 2.0.0-preview1
 before_install:
   - gem install bundler
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install pdftk
+  - sudo updatedb -U /usr/bin
 script:
   - bundle exec rake test
 notifications:
