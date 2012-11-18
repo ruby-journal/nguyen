@@ -6,6 +6,7 @@ You could download pdftk at http://www.accesspdf.com/pdftk/
 
 Nguyên is a fork of Jens Krämer's pdf-forms with addition of filling forms with XFDF feature.
 
+{<img src="https://secure.travis-ci.org/joneslee85/nguyen.png?branch=master" alt="Build Status" />}[https://travis-ci.org/joneslee85/nguyen]
 {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/joneslee85/nguyen]
 
 == EXAMPLE:
