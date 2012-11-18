@@ -3,6 +3,9 @@ rvm:
   - 1.9.3
   - 2.0.0-preview1
 before_install:
+  - rvm get stable
+  - rvm install ruby-2.0.0-preview1
+  - rvm reload
   - gem install bundler
 before_script:
   - sudo apt-get update
