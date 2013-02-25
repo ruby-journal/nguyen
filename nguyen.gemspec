@@ -11,12 +11,13 @@ Gem::Specification.new do |s|
   s.authors     = 'Trung Lê'
   s.email       = 'joneslee85@gmail.com'
   s.homepage    = 'http://github.com/joneslee85/nguyen'
+  s.license     = %q{MIT}
 
   s.files        = Dir['{lib}/**/*.rb', 'LICENSE', '*.rdoc']
   s.require_path = 'lib'
   s.requirements << 'pdtk 1.44.1 or newer'
-  s.required_ruby_version     = '>= 1.8.7'
-  s.required_rubygems_version = '>= 1.3.6'
+  s.required_ruby_version     = '>= 1.9.3'
+  s.required_rubygems_version = '>= 1.8.25'
 
-  s.add_dependency 'nokogiri', '~> 1.5.5'
+  s.add_dependency 'nokogiri', '~> 1.5.6'
 end
