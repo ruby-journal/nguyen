@@ -1,4 +1,4 @@
-require 'nguyen/fdf'
-require 'nguyen/xfdf'
-require 'nguyen/pdf'
-require 'nguyen/pdftk_wrapper'
+require_relative 'nguyen/fdf'
+require_relative 'nguyen/xfdf'
+require_relative 'nguyen/pdf'
+require_relative 'nguyen/pdftk_wrapper'

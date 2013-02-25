@@ -1,21 +1,20 @@
 require 'test_helper'
 
-class PdfTest < Test::Unit::TestCase
+describe Nguyen::Pdf do
+  let(:pdftk) { Nguyen::PdftkWrapper.new 'pdftk' }
 
-  def setup
-    @pdftk = Nguyen::PdftkWrapper.new 'pdftk'
+  describe '#fields' do
+    let(:pdf) { Nguyen::Pdf.new 'test/fixtures/form.pdf', pdftk }
+    it 'returns extracted fields from PDF' do  
+      fields = pdf.fields
+      fields.any?.must_equal true
+      fields.must_include 'program_name'
+    end
   end
 
-  def test_fields    
-    pdf = Nguyen::Pdf.new 'test/fixtures/form.pdf', @pdftk
-    assert fields = pdf.fields
-    assert fields.any?
-    assert fields.include?('program_name')
-  end
-
-  def test_should_error_when_file_not_readable
-    assert_raises(IOError){
-      Nguyen::Pdf.new 'foo/bar.pdf', @pdftk
-    }
+  describe '#new' do
+    it 'reaise IOError if cannot read PDF file' do
+      proc { Nguyen::Pdf.new 'foo/bar.pdf', pdftk }.must_raise IOError
+    end
   end
 end

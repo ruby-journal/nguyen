@@ -1,3 +1,3 @@
-require 'test/unit'
-require 'nguyen'
+require_relative '../lib/nguyen'
 require 'pp'
+require 'minitest/autorun'

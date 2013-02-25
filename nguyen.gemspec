@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/joneslee85/nguyen'
   s.license     = %q{MIT}
 
-  s.files        = Dir['{lib}/**/*.rb', 'LICENSE', '*.rdoc']
+  s.files        = Dir['{lib}/**/*.rb', 'LICENSE', '*.md']
   s.require_path = 'lib'
   s.requirements << 'pdtk 1.44.1 or newer'
   s.required_ruby_version     = '>= 1.9.3'
