@@ -65,4 +65,4 @@ I greatly welcome contributions, please feel free to fork and submit pull reques
 
 ## LICENSE
 
-see [a relative link](LICENSE)
+see [LICENSE](LICENSE)
