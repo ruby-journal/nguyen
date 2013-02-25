@@ -11,9 +11,9 @@ module Nguyen
     def initialize(data = {}, options = {})
       @data = data
       @options = {
-        :file => nil,
-        :ufile => nil,
-        :id => nil
+        file: nil,
+        ufile: nil,
+        id: nil
       }.merge(options)
     end
 
