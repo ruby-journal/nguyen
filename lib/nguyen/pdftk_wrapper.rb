@@ -44,7 +44,7 @@ module Nguyen
 
     def cat(*files,output)
       files = files[0] if files[0].class == Array
-      input = files.map{|f| %Q("#{f}")}
+      input = files.map{|f| %Q(#{f})}
       call_pdftk(*input,'output',output)
     end
 

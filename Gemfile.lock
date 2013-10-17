@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    nguyen (0.0.3)
+    nguyen (1.0.0)
       nokogiri (~> 1.5.6)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    nokogiri (1.5.6)
-    rake (10.0.3)
+    nokogiri (1.5.10)
+    rake (10.1.0)
 
 PLATFORMS
   ruby
