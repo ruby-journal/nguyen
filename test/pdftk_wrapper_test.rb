@@ -33,4 +33,30 @@ describe Nguyen::PdftkWrapper do
       end
     end
   end
+
+  describe '#cat' do
+
+    before do
+      FileUtils.cp('test/fixtures/form.pdf', 'test/fixtures/form2.pdf')
+    end
+
+    let(:pdf) { 'test/fixtures/form.pdf' }
+    let(:pdf2) { 'test/fixtures/form2.pdf' }
+
+    it 'combines pdfs' do
+      pdftk.cat(pdf, pdf2, 'output.pdf')
+      assert File.size('output.pdf') > File.size('test/fixtures/form.pdf')
+      FileUtils.rm('output.pdf')
+    end
+
+    it 'allows a wildcard to combine pdfs' do
+      pdftk.cat('test/fixtures/form*.pdf', 'output.pdf')
+      assert File.size('output.pdf') > File.size('test/fixtures/form.pdf')
+      FileUtils.rm('output.pdf')
+    end
+
+    after do
+      FileUtils.rm('test/fixtures/form2.pdf')
+    end
+  end
 end
