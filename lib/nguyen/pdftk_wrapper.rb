@@ -3,6 +3,17 @@ module Nguyen
   class PdftkError < StandardError
   end
 
+  class PdftkExecutionError < StandardError
+    attr_reader :exit_status, :executed_command, :command_output
+
+    def initialize(message, executed_command, exit_status, command_output)
+      super(message)
+      @executed_command = executed_command
+      @exit_status = exit_status
+      @command_output = command_output
+    end
+  end
+
   # Wraps calls to PdfTk
   class PdftkWrapper
 
@@ -19,8 +30,8 @@ module Nguyen
       tmp = Tempfile.new('pdf_forms-fdf')
       tmp.close
       form_data_format.save_to tmp.path
-      command = pdftk_command %Q("#{template}"), 'fill_form', %Q("#{tmp.path}"), 'output', destination, add_options(tmp.path)
-      output = %x{#{command}}
+      args = %Q("#{template}"), 'fill_form', %Q("#{tmp.path}"), 'output', destination, add_options(tmp.path)
+      output = call_pdftk(args)
       unless File.readable?(destination) && File.size(destination) > 0
         raise PdftkError.new("failed to fill form with command\n#{command}\ncommand output was:\n#{output}")
       end
@@ -39,13 +50,16 @@ module Nguyen
     end
 
     def call_pdftk(*args)
-      %x{#{pdftk_command args}}
+      output = %x{#{pdftk_command args}}
+      command_status = $?
+      raise PdftkExecutionError.new("Pdftk failed to run with args: #{args}", "#{pdftk_command args}", command_status.exitstatus, output) unless command_status.exitstatus == 0
+      output
     end
 
     def cat(*files,output)
       files = files[0] if files[0].class == Array
       input = files.map{|f| %Q(#{f})}
-      call_pdftk(*input,'output',output)
+      output = call_pdftk(*input,'output',output)
     end
 
     protected

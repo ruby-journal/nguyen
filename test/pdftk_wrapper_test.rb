@@ -1,5 +1,11 @@
 require 'test_helper'
 
+class FakeXfdf
+  def save_to(path)
+    true
+  end
+end
+
 describe Nguyen::PdftkWrapper do
 
   let(:pdftk) { Nguyen::PdftkWrapper.new('pdftk') }
@@ -32,31 +38,46 @@ describe Nguyen::PdftkWrapper do
        FileUtils.rm('output.pdf')
       end
     end
+
+    describe 'when given an invalid xfdf file' do
+      let(:not_an_xfdf_doc) { FakeXfdf.new }
+
+      it 'raises an exception' do
+        assert_raises(Nguyen::PdftkExecutionError) { pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', not_an_xfdf_doc) }
+      end
+    end
   end
 
   describe '#cat' do
-
-    before do
-      FileUtils.cp('test/fixtures/form.pdf', 'test/fixtures/form2.pdf')
-    end
-
     let(:pdf) { 'test/fixtures/form.pdf' }
     let(:pdf2) { 'test/fixtures/form2.pdf' }
 
-    it 'combines pdfs' do
-      pdftk.cat(pdf, pdf2, 'output.pdf')
-      assert File.size('output.pdf') > File.size('test/fixtures/form.pdf')
-      FileUtils.rm('output.pdf')
+    describe 'when given valid documents' do
+      before do
+        FileUtils.cp('test/fixtures/form.pdf', 'test/fixtures/form2.pdf')
+      end
+
+      it 'combines pdfs' do
+        pdftk.cat(pdf, pdf2, 'output.pdf')
+        assert File.size('output.pdf') > File.size('test/fixtures/form.pdf')
+        FileUtils.rm('output.pdf')
+      end
+
+      it 'allows a wildcard to combine pdfs' do
+        pdftk.cat('test/fixtures/form*.pdf', 'output.pdf')
+        assert File.size('output.pdf') > File.size('test/fixtures/form.pdf')
+        FileUtils.rm('output.pdf')
+      end
+
+      after do
+        FileUtils.rm('test/fixtures/form2.pdf')
+      end
     end
 
-    it 'allows a wildcard to combine pdfs' do
-      pdftk.cat('test/fixtures/form*.pdf', 'output.pdf')
-      assert File.size('output.pdf') > File.size('test/fixtures/form.pdf')
-      FileUtils.rm('output.pdf')
-    end
-
-    after do
-      FileUtils.rm('test/fixtures/form2.pdf')
+    describe 'when given invalid documents' do
+      it 'raises a PdftkExecutionError' do
+        assert_raises(Nguyen::PdftkExecutionError) { pdftk.cat(pdf, pdf2, 'output.pdf') }
+      end
     end
   end
 end
