@@ -23,5 +23,5 @@ task :build => "#{gemspec.full_name}.gem"
 
 file "#{gemspec.full_name}.gem" => gemspec.files + ['nguyen.gemspec'] do
   system 'gem build nguyen.gemspec'
-  system "gem install nguyen-#{PdfForms::VERSION}.gem"
+  system "gem install nguyen-#{Nguyen::VERSION.dup}.gem"
 end

@@ -1,13 +1,15 @@
 PATH
   remote: .
   specs:
-    nguyen (1.0.0)
-      nokogiri (~> 1.5.6)
+    nguyen (1.0.2)
+      nokogiri (~> 1.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    nokogiri (1.5.10)
+    mini_portile (0.5.3)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     rake (10.1.0)
 
 PLATFORMS

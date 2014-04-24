@@ -29,7 +29,7 @@ module Nguyen
     end
 
     # pdftk.read '/path/to/form.pdf'
-    # returns an instance of PdfForms::Pdf representing the given template
+    # returns an instance of Nguyen::Pdf representing the given template
     def read(path)
       Pdf.new path, self
     end
