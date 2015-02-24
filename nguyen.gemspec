@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files        = Dir['{lib}/**/*.rb', 'LICENSE', '*.md']
   s.require_path = 'lib'
   s.requirements << 'pdtk 1.44.1 or newer'
-  s.required_ruby_version     = '>= 1.9.3'
+  s.required_ruby_version     = '>= 2.0.0'
   s.required_rubygems_version = '>= 1.8.25'
 
   s.add_runtime_dependency 'nokogiri', '~> 1.5'
