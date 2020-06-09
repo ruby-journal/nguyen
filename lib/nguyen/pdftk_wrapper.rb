@@ -14,11 +14,11 @@ module Nguyen
       @options = options
     end
 
-    # pdftk.fill_form '/path/to/form.pdf', '/path/to/destination.pdf', xfdf_or_fdf_object
-    def fill_form(template, destination, form_data_format)
+    # pdftk.fill_form '/path/to/form.pdf', '/path/to/destination.pdf', xfdf_or_fdf_object or xfdf_or_fdf_string
+    def fill_form(template, destination, form_data)
       tmp = Tempfile.new('pdf_forms-fdf')
       tmp.close
-      form_data_format.save_to tmp.path
+      form_data.respond_to?(:save_to) ? form_data.save_to(tmp.path) : File.write(tmp.path, form_data)
       command = pdftk_command %Q("#{template}"), 'fill_form', %Q("#{tmp.path}"), 'output', destination, add_options(tmp.path)
       output = %x{#{command}}
       unless File.readable?(destination) && File.size(destination) > 0
