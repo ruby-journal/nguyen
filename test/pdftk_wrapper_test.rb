@@ -33,7 +33,7 @@ describe Nguyen::PdftkWrapper do
       end
     end
 
-    describe 'input file xfdf string' do
+    describe 'input file is xfdf xml string' do
       let(:xfdf) { Nguyen::Xfdf.new(quote_of_the_day: 'I love you').to_xfdf }
 
       it 'fills the PDF' do
