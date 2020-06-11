@@ -11,7 +11,7 @@ GEM
     minitest (5.5.1)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
-    rake (10.1.0)
+    rake (13.0.1)
 
 PLATFORMS
   ruby
