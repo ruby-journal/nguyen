@@ -49,6 +49,14 @@ pdftk.fill_form('/path/to/form.pdf', 'myform.pdf', fdf)
 # with xfdf
 xfdf = Nguyen::Xfdf.new(foo: 'bar')
 pdftk.fill_form('/path/to/form.pdf', 'myform.pdf', xfdf)
+
+# will work with xfdf or fdf xml string directly as well
+xfdf_string = <<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve"><fields><field name="foo"><value>bar</value></field></fields></xfdf>
+XML
+# or xfdf_string = Nguyen::Xfdf.new(foo: 'bar').to_xfdf
+pdftk.fill_form('/path/to/form', 'myform.pdf', xfdf_string)
 ```
 
 ## INSTALL:

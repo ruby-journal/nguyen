@@ -27,9 +27,19 @@ describe Nguyen::PdftkWrapper do
       let(:xfdf) { Nguyen::Xfdf.new(quote_of_the_day: 'I love you') }
 
       it 'fills the PDF' do
-       pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', xfdf)
-       assert File.size('output.pdf') > 0
-       FileUtils.rm('output.pdf')
+        pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', xfdf)
+        assert File.size('output.pdf') > 0
+        FileUtils.rm('output.pdf')
+      end
+    end
+
+    describe 'input file is xfdf xml string' do
+      let(:xfdf) { Nguyen::Xfdf.new(quote_of_the_day: 'I love you').to_xfdf }
+
+      it 'fills the PDF' do
+        pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', xfdf)
+        assert File.size('output.pdf') > 0
+        FileUtils.rm('output.pdf')
       end
     end
   end

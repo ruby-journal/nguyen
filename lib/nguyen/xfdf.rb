@@ -37,7 +37,7 @@ module Nguyen
 
     # write fdf content to path
     def save_to(path)
-      (File.open(path, 'w') << to_xfdf).close
+      File.write(path, to_xfdf)
     end
 
   end
