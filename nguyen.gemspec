@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
   s.requirements << 'pdtk 1.44.1 or newer'
   s.required_ruby_version     = '>= 2.5.0'
 
-  s.add_runtime_dependency 'nokogiri', '~> 1.5'
+  s.add_runtime_dependency 'nokogiri', '~> 1.10'
   s.add_development_dependency 'minitest'
 end
