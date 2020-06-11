@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nguyen (1.0.2)
+    nguyen (1.0.3)
       nokogiri (~> 1.5)
 
 GEM
