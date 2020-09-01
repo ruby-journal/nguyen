@@ -8,6 +8,9 @@ Nguyên is a fork of Jens Krämer's pdf-forms with addition of filling forms wit
 
 [![Build Status](https://secure.travis-ci.org/ruby-journal/nguyen.png)](http://travis-ci.org/ruby-journal/nguyen)
 [![Code Climate](https://codeclimate.com/github/ruby-journal/nguyen/badges/gpa.svg)](https://codeclimate.com/github/ruby-journal/nguyen)
+[![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love.svg)](https://webuild.community)
+[![Made in Vietnam](https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg)](https://webuild.community)
+[![Built with WeBuild](https://raw.githubusercontent.com/webuild-community/badge/master/svg/WeBuild.svg)](https://webuild.community)
 
 ## EXAMPLE:
 
