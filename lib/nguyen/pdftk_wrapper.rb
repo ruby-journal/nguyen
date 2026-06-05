@@ -28,6 +28,18 @@ module Nguyen
       tmp.unlink if tmp
     end
 
+    # pdftk.stamp '/path/to/source.pdf', '/path/to/stamp.pdf', '/path/to/destination.pdf'
+    # overlays the stamp PDF on top of every page of the source PDF
+    def stamp(template, stamp_file, destination)
+      stamp_operation 'stamp', template, stamp_file, destination
+    end
+
+    # pdftk.multistamp '/path/to/source.pdf', '/path/to/stamp.pdf', '/path/to/destination.pdf'
+    # overlays the stamp PDF onto the source PDF page by page
+    def multistamp(template, stamp_file, destination)
+      stamp_operation 'multistamp', template, stamp_file, destination
+    end
+
     # pdftk.read '/path/to/form.pdf'
     # returns an instance of Nguyen::Pdf representing the given template
     def read(path)
@@ -49,6 +61,14 @@ module Nguyen
     end
 
     protected
+
+      def stamp_operation(operation, template, stamp_file, destination)
+        command = pdftk_command %Q("#{template}"), operation, %Q("#{stamp_file}"), 'output', %Q("#{destination}")
+        output = %x{#{command}}
+        unless File.readable?(destination) && File.size(destination) > 0
+          raise PdftkError.new("failed to #{operation} with command\n#{command}\ncommand output was:\n#{output}")
+        end
+      end
 
       def pdftk_command(*args)
         "#{pdftk} #{args.flatten.compact.join ' '} 2>&1"

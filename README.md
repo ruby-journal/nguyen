@@ -62,6 +62,19 @@ XML
 pdftk.fill_form('/path/to/form', 'myform.pdf', xfdf_string)
 ```
 
+### Stamp PDFs
+
+```ruby
+pdftk = Nguyen::PdftkWrapper.new('/usr/local/bin/pdftk')
+
+# overlay stamp.pdf (e.g. a watermark or signature) on top of every page of source.pdf
+pdftk.stamp('source.pdf', 'stamp.pdf', 'stamped.pdf')
+
+# overlay stamp.pdf page by page: page 1 of stamp.pdf onto page 1 of source.pdf, etc.
+# the last page of stamp.pdf is repeated if source.pdf has more pages
+pdftk.multistamp('source.pdf', 'stamp.pdf', 'stamped.pdf')
+```
+
 ## INSTALL:
 
     gem install nguyen

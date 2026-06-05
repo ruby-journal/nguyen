@@ -86,6 +86,34 @@ describe Nguyen::PdftkWrapper do
     end
   end
 
+  describe '#stamp' do
+    def page_count(pdf_path)
+      dump = pdftk.call_pdftk %Q("#{pdf_path}"), 'dump_data'
+      dump[/^NumberOfPages: (\d+)$/, 1].to_i
+    end
+
+    it 'overlays the stamp onto every page of the source' do
+      pdftk.stamp('test/fixtures/form.pdf', 'test/fixtures/stamp.pdf', 'output.pdf')
+      assert File.size('output.pdf') > 0
+      _(page_count('output.pdf')).must_equal page_count('test/fixtures/form.pdf')
+      FileUtils.rm('output.pdf')
+    end
+
+    it 'raises PdftkError when the stamp file does not exist' do
+      _(proc {
+        pdftk.stamp('test/fixtures/form.pdf', 'no/such/stamp.pdf', 'output.pdf')
+      }).must_raise Nguyen::PdftkError
+    end
+  end
+
+  describe '#multistamp' do
+    it 'overlays the stamp onto the source page by page' do
+      pdftk.multistamp('test/fixtures/form.pdf', 'test/fixtures/stamp.pdf', 'output.pdf')
+      assert File.size('output.pdf') > 0
+      FileUtils.rm('output.pdf')
+    end
+  end
+
   describe '#cat' do
 
     before do
