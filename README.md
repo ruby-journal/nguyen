@@ -1,12 +1,12 @@
-# Nguyên the PDF Field Merger
+# Nguyễn the PDF Field Merger
 
 A very lightweight library that fill PDF forms using XFDF/FDF with pdftk
 
 You could download pdftk at http://www.accesspdf.com/pdftk/
 
-Nguyên is a fork of Jens Krämer's pdf-forms with addition of filling forms with XFDF feature.
+Nguyễn is a fork of Jens Krämer's pdf-forms with addition of filling forms with XFDF feature.
 
-[![Build Status](https://secure.travis-ci.org/ruby-journal/nguyen.png)](http://travis-ci.org/ruby-journal/nguyen)
+[![CI](https://github.com/ruby-journal/nguyen/actions/workflows/ci.yml/badge.svg)](https://github.com/ruby-journal/nguyen/actions/workflows/ci.yml)
 [![Code Climate](https://codeclimate.com/github/ruby-journal/nguyen/badges/gpa.svg)](https://codeclimate.com/github/ruby-journal/nguyen)
 [![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love.svg)](https://webuild.community)
 [![Made in Vietnam](https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg)](https://webuild.community)
