@@ -43,9 +43,21 @@ describe Nguyen::PdftkWrapper do
       end
     end
 
+    describe 'paths containing shell metacharacters' do
+      let(:fdf) { Nguyen::Fdf.new(quote_of_the_day: 'no shell involved') }
+      let(:destination) { 'weird $(touch hacked); name.pdf' }
+
+      it 'treats them as literal file names instead of executing them' do
+        pdftk.fill_form('test/fixtures/form.pdf', destination, fdf)
+        assert File.size(destination) > 0
+        refute File.exist?('hacked'), 'shell command embedded in file name must not execute'
+        FileUtils.rm(destination)
+      end
+    end
+
     describe 'radio buttons and checkboxes' do
       def field_value(pdf_path, field_name)
-        dump = pdftk.call_pdftk %Q("#{pdf_path}"), 'dump_data_fields_utf8'
+        dump = pdftk.call_pdftk pdf_path, 'dump_data_fields_utf8'
         block = dump.split(/^---$/).find { |b| b =~ /^FieldName: #{Regexp.escape(field_name)}$/ }
         block && block[/^FieldValue: (.*)$/, 1]
       end
@@ -88,7 +100,7 @@ describe Nguyen::PdftkWrapper do
 
   describe '#stamp' do
     def page_count(pdf_path)
-      dump = pdftk.call_pdftk %Q("#{pdf_path}"), 'dump_data'
+      dump = pdftk.call_pdftk pdf_path, 'dump_data'
       dump[/^NumberOfPages: (\d+)$/, 1].to_i
     end
 
