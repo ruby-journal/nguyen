@@ -1,4 +1,6 @@
 *.gem
 .rvmrc
+Gemfile.lock
+vendor/bundle
 .tool-versions
 .idea

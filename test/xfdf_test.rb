@@ -5,7 +5,7 @@ describe Nguyen::Xfdf do
 
   it 'generates XFDF' do
     xfdf_text = xfdf.to_xfdf
-    assert_match /<field name="(field1)">.*<value>(fieldvalue1)<\/value>.*<\/field>/m, xfdf_text
-    assert_match /<field name="(other_field)">.*<value>(some other value)<\/value>.*<\/field>/m, xfdf_text
+    assert_match %r{<field name="(field1)">.*<value>(fieldvalue1)</value>.*</field>}m, xfdf_text
+    assert_match %r{<field name="(other_field)">.*<value>(some other value)</value>.*</field>}m, xfdf_text
   end
 end

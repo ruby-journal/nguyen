@@ -43,7 +43,7 @@ module Nguyen
     protected
 
     def header
-      header = "%FDF-1.2\n\n1 0 obj\n<<\n/FDF << /Fields 2 0 R"
+      header = +"%FDF-1.2\n\n1 0 obj\n<<\n/FDF << /Fields 2 0 R"
 
       # /F
       header << "/F (#{options[:file]})" if options[:file]

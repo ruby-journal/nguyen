@@ -8,7 +8,7 @@ describe Nguyen::PdftkWrapper do
   describe '#get_field_names' do
     it 'returns fields name' do
       fields = pdftk.get_field_names 'test/fixtures/form.pdf'
-      fields.must_include 'program_name'
+      _(fields).must_include 'program_name'
     end
   end
 
@@ -40,6 +40,48 @@ describe Nguyen::PdftkWrapper do
         pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', xfdf)
         assert File.size('output.pdf') > 0
         FileUtils.rm('output.pdf')
+      end
+    end
+
+    describe 'radio buttons and checkboxes' do
+      def field_value(pdf_path, field_name)
+        dump = pdftk.call_pdftk %Q("#{pdf_path}"), 'dump_data_fields_utf8'
+        block = dump.split(/^---$/).find { |b| b =~ /^FieldName: #{Regexp.escape(field_name)}$/ }
+        block && block[/^FieldValue: (.*)$/, 1]
+      end
+
+      describe 'with XFDF export values' do
+        let(:xfdf) do
+          Nguyen::Xfdf.new(
+            child_gender: '1',                          # radio with 1/0 states
+            caregiver_relationship_to_child: 'Parent',  # radio with named states
+            area1_answer1: 'YES',                       # checkboxes
+            area1_answer2: 'SOMETIMES',
+            area1_answer3: 'NOT YET'
+          )
+        end
+
+        it 'ticks the boxes matching the export values' do
+          pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', xfdf)
+          _(field_value('output.pdf', 'child_gender')).must_equal '1'
+          _(field_value('output.pdf', 'caregiver_relationship_to_child')).must_equal 'Parent'
+          _(field_value('output.pdf', 'area1_answer1')).must_equal 'YES'
+          _(field_value('output.pdf', 'area1_answer2')).must_equal 'SOMETIMES'
+          _(field_value('output.pdf', 'area1_answer3')).must_equal 'NOT YET'
+          # untouched checkbox stays unticked
+          _(field_value('output.pdf', 'area1_answer4')).must_be_nil
+          FileUtils.rm('output.pdf')
+        end
+      end
+
+      describe 'with FDF booleans' do
+        let(:fdf) { Nguyen::Fdf.new(child_gender: true) }
+
+        it 'ticks the box via the true => /1 mapping' do
+          pdftk.fill_form('test/fixtures/form.pdf', 'output.pdf', fdf)
+          _(field_value('output.pdf', 'child_gender')).must_equal '1'
+          FileUtils.rm('output.pdf')
+        end
       end
     end
   end
