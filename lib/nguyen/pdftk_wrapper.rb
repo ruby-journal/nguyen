@@ -1,4 +1,6 @@
 require 'tempfile'
+require 'open3'
+require 'shellwords'
 module Nguyen
   class PdftkError < StandardError
   end
@@ -19,10 +21,10 @@ module Nguyen
       tmp = Tempfile.new('pdf_forms-fdf')
       tmp.close
       form_data.respond_to?(:save_to) ? form_data.save_to(tmp.path) : File.write(tmp.path, form_data)
-      command = pdftk_command %Q("#{template}"), 'fill_form', %Q("#{tmp.path}"), 'output', destination, add_options(tmp.path)
-      output = %x{#{command}}
+      args = [template, 'fill_form', tmp.path, 'output', destination, add_options(tmp.path)]
+      output = call_pdftk(*args)
       unless File.readable?(destination) && File.size(destination) > 0
-        raise PdftkError.new("failed to fill form with command\n#{command}\ncommand output was:\n#{output}")
+        raise PdftkError.new("failed to fill form with command\n#{describe_command(args)}\ncommand output was:\n#{output}")
       end
     ensure
       tmp.unlink if tmp
@@ -50,28 +52,37 @@ module Nguyen
       read(template).fields
     end
 
+    # invokes pdftk with the given arguments and returns its output (stdout
+    # and stderr combined); arguments are passed to the process verbatim,
+    # without any shell involved, so paths need no quoting or escaping
     def call_pdftk(*args)
-      %x{#{pdftk_command args}}
+      output, _status = Open3.capture2e(pdftk, *normalize_args(args))
+      output
     end
 
-    def cat(*files,output)
-      files = files[0] if files[0].class == Array
-      input = files.map{|f| %Q(#{f})}
-      call_pdftk(*input,'output',output)
+    def cat(*files, output)
+      files = files.flatten
+      input = files.flat_map { |f| f.to_s.include?('*') ? Dir.glob(f) : [f] }
+      call_pdftk(*input, 'output', output)
     end
 
     protected
 
       def stamp_operation(operation, template, stamp_file, destination)
-        command = pdftk_command %Q("#{template}"), operation, %Q("#{stamp_file}"), 'output', %Q("#{destination}")
-        output = %x{#{command}}
+        args = [template, operation, stamp_file, 'output', destination]
+        output = call_pdftk(*args)
         unless File.readable?(destination) && File.size(destination) > 0
-          raise PdftkError.new("failed to #{operation} with command\n#{command}\ncommand output was:\n#{output}")
+          raise PdftkError.new("failed to #{operation} with command\n#{describe_command(args)}\ncommand output was:\n#{output}")
         end
       end
 
-      def pdftk_command(*args)
-        "#{pdftk} #{args.flatten.compact.join ' '} 2>&1"
+      def normalize_args(args)
+        args.flatten.compact.map(&:to_s)
+      end
+
+      # human readable rendition of a pdftk invocation, for error messages
+      def describe_command(args)
+        Shellwords.join([pdftk, *normalize_args(args)])
       end
 
       def add_options(pwd)
@@ -81,7 +92,8 @@ module Nguyen
           opt_args << 'flatten'
         end
         if options[:encrypt]
-          opt_args.concat ['encrypt_128bit', 'owner_pw', pwd, options[:encrypt_options]]
+          opt_args.concat ['encrypt_128bit', 'owner_pw', pwd]
+          opt_args.concat Shellwords.split(options[:encrypt_options]) if options[:encrypt_options]
         end
         opt_args
       end
